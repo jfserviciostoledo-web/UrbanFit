@@ -1,0 +1,120 @@
+/* --- VARIABLES DE COLOR --- */
+:root {
+    --color-fondo: #121212; /* Negro */
+    --color-texto: #f5f5f5; /* Blanco/Gris muy claro */
+    --color-primario: #ff4500; /* Naranja/Rojo enérgico */
+    --color-secundario: #2a2a2a; /* Gris oscuro para cajas */
+}
+
+/* --- ESTILOS GENERALES --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    line-height: 1.6;
+}
+
+.contenedor {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+h1, h2, h3 {
+    color: var(--color-primario);
+    margin-bottom: 20px;
+}
+
+/* --- CABECERA Y MENÚ --- */
+header {
+    background-color: #000;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    border-bottom: 3px solid var(--color-primario);
+}
+
+header h1 {
+    margin-bottom: 0;
+    font-size: 1.5rem;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+}
+
+nav ul li a {
+    color: var(--color-texto);
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+nav ul li a:hover {
+    color: var(--color-primario);
+}
+
+/* --- SECCIÓN HERO (BIENVENIDA) --- */
+.hero {
+    text-align: center;
+    padding: 80px 20px;
+    background-color: var(--color-secundario);
+    border-bottom: 2px solid #333;
+}
+
+.hero h2 {
+    font-size: 2.5rem;
+    color: var(--color-texto);
+}
+
+/* --- SECCIONES DE CONTENIDO --- */
+#quienes-somos p {
+    margin-bottom: 15px;
+}
+
+.fondo-gris {
+    background-color: var(--color-secundario);
+    border-radius: 8px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.caja-filosofia {
+    margin-bottom: 30px;
+}
+
+.caja-filosofia ul {
+    list-style-position: inside;
+    margin-left: 20px;
+}
+
+/* --- FOOTER --- */
+footer {
+    background-color: #000;
+    text-align: center;
+    padding: 20px;
+    border-top: 3px solid var(--color-primario);
+}
+
+.info-contacto {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding: 20px 0;
+}
+
+.copyright {
+    font-size: 0.8rem;
+    color: #777;
+    margin-top: 10px;
+}
