@@ -23,11 +23,53 @@
             </ul>
         </nav>
     </header>
-
-    <main class="contenedor hero">
+    <main class="contenedor">
         <h2>Contacta con Nosotros</h2>
-        <p>Estamos trabajando en esta sección. ¡Pronto habrá novedades!</p>
+        <p>¿Tienes alguna duda o quieres apuntarte? Escríbenos o visítanos, estaremos encantados de ayudarte.</p>
+
+        <div class="grid-contacto">
+            
+            <div class="info-directa">
+                <div class="tarjeta-info">
+                    <h3>📍 Dirección</h3>
+                    <p>[Insertar Dirección del gimnasio]</p>
+                </div>
+                <div class="tarjeta-info">
+                    <h3>🕒 Horario</h3>
+                    <p>[Insertar Horario de apertura]</p>
+                </div>
+                <div class="tarjeta-info">
+                    <h3>📞 Teléfono</h3>
+                    <p>[Insertar Teléfono de contacto]</p>
+                </div>
+                <div class="tarjeta-info">
+                    <h3>✉️ Email</h3>
+                    <p>[Insertar Correo electrónico]</p>
+                </div>
+            </div>
+
+            <div class="formulario-contacto">
+                <h3>Envíanos un mensaje</h3>
+                <form action="#" method="POST">
+                    <div class="grupo-input">
+                        <label for="nombre">Nombre completo:</label>
+                        <input type="text" id="nombre" name="nombre" required placeholder="Tu nombre">
+                    </div>
+                    <div class="grupo-input">
+                        <label for="email">Correo electrónico:</label>
+                        <input type="email" id="email" name="email" required placeholder="tuemail@ejemplo.com">
+                    </div>
+                    <div class="grupo-input">
+                        <label for="mensaje">Mensaje:</label>
+                        <textarea id="mensaje" name="mensaje" rows="5" required placeholder="¿En qué podemos ayudarte?"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primario btn-formulario">Enviar Mensaje</button>
+                </form>
+            </div>
+
+        </div>
     </main>
+
 
     <footer>
         <div class="contenedor info-contacto">
