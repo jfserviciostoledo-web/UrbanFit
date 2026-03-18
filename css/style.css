@@ -35,10 +35,6 @@ h1, h2, h3 {
 header {
     background-color: #000;
     padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
     border-bottom: 3px solid var(--color-primario);
 }
 
@@ -47,21 +43,102 @@ header h1 {
     font-size: 1.5rem;
 }
 
-nav ul {
-    list-style: none;
+header .contenedor {
     display: flex;
-    gap: 15px;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
 }
 
-nav ul li a {
+/* Estilos base de los enlaces */
+.nav-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-menu li a {
     color: var(--color-texto);
     text-decoration: none;
     font-weight: bold;
     transition: color 0.3s;
+    display: block;
 }
 
-nav ul li a:hover {
+.nav-menu li a:hover {
     color: var(--color-primario);
+}
+
+/* --- BOTÓN HAMBURGUESA (MÓVIL) --- */
+.hamburger {
+    display: block;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+.hamburger span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: var(--color-primario);
+    margin-bottom: 5px;
+    border-radius: 2px;
+}
+
+/* --- MENÚ DESPLEGABLE (MÓVIL) --- */
+.nav-menu {
+    position: absolute;
+    top: 100%; /* Justo debajo del header */
+    left: 0;
+    width: 100%;
+    background-color: #1a1a1a;
+    display: none; /* Oculto por defecto */
+    flex-direction: column;
+    z-index: 1000;
+    padding-bottom: 15px;
+    border-bottom: 3px solid var(--color-primario);
+}
+
+.nav-menu.show {
+    display: flex; /* Se activa al pulsar con el JavaScript */
+}
+
+.nav-menu ul {
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-menu li {
+    text-align: center;
+    padding: 15px 0; /* Espacio grande para pulsar con el dedo */
+}
+
+/* --- MEDIA QUERIES (ORDENADOR) --- */
+@media (min-width: 768px) {
+    .hamburger {
+        display: none; /* Ocultamos las 3 rayitas en PC */
+    }
+
+    .nav-menu {
+        position: static;
+        display: flex;
+        flex-direction: row;
+        background-color: transparent;
+        width: auto;
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    .nav-menu ul {
+        flex-direction: row;
+        gap: 20px;
+    }
+
+    .nav-menu li {
+        padding: 0;
+    }
 }
 
 /* --- SECCIÓN HERO (BIENVENIDA) --- */
