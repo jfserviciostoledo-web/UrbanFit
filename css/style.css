@@ -274,3 +274,126 @@ img {
         grid-template-columns: repeat(3, 1fr);
     }
 }
+/* --- SECCIÓN TARIFAS --- */
+
+.grid-tarifas {
+    display: grid;
+    grid-template-columns: 1fr; /* Móvil: 1 columna hacia abajo */
+    gap: 30px;
+    margin-top: 50px;
+    align-items: center; /* Centra las tarjetas si tienen distintas alturas */
+}
+
+.tarjeta-tarifa {
+    background-color: var(--color-secundario);
+    padding: 40px 20px;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid #333;
+    position: relative; /* Necesario para poder poner la "etiqueta" flotando arriba */
+    transition: transform 0.3s ease; /* Hace que el movimiento al pasar el ratón sea suave */
+}
+
+/* Efecto Hover: la tarjeta "salta" un poquito hacia arriba cuando pasas el ratón */
+.tarjeta-tarifa:hover {
+    transform: translateY(-10px);
+}
+
+/* Estilos especiales para la tarjeta del medio (Destacada) */
+.tarjeta-tarifa.destacada {
+    border: 2px solid var(--color-primario);
+    background-color: #1a1a1a;
+}
+
+/* La etiqueta de "Más popular" */
+.etiqueta {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%); /* Truco para centrar un elemento absoluto perfecto */
+    background-color: var(--color-primario);
+    color: #fff;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.precio {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--color-texto);
+    margin: 20px 0;
+}
+
+.precio span {
+    font-size: 1rem;
+    color: #888;
+}
+
+.tarjeta-tarifa ul {
+    list-style: none;
+    margin-bottom: 30px;
+    padding: 0;
+}
+
+.tarjeta-tarifa li {
+    padding: 12px 0;
+    border-bottom: 1px solid #333;
+    font-size: 0.95rem;
+}
+
+.tarjeta-tarifa li:last-child {
+    border-bottom: none;
+}
+
+/* --- BOTONES DE LAS TARIFAS (Optimizados para táctil) --- */
+.btn {
+    display: inline-block;
+    padding: 12px 25px; /* Botones grandes y fáciles de pulsar */
+    background-color: transparent;
+    color: var(--color-primario);
+    text-decoration: none;
+    border: 2px solid var(--color-primario);
+    border-radius: 5px;
+    font-weight: bold;
+    transition: all 0.3s;
+    width: 80%; /* Ocupa casi todo el ancho de la tarjeta */
+}
+
+.btn:hover {
+    background-color: var(--color-primario);
+    color: #fff;
+}
+
+.btn-primario {
+    background-color: var(--color-primario);
+    color: #fff;
+}
+
+.btn-primario:hover {
+    background-color: #cc3700; /* Rojo/Naranja más oscuro al pasar el ratón */
+}
+
+/* --- MEDIA QUERIES PARA TARIFAS --- */
+
+/* Tablets */
+@media (min-width: 768px) {
+    .grid-tarifas {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Ordenadores: Ponemos las 3 tarifas en fila y hacemos la del centro más grande */
+@media (min-width: 1024px) {
+    .grid-tarifas {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .tarjeta-tarifa.destacada {
+        transform: scale(1.08); /* Hace la tarjeta de en medio un 8% más grande */
+    }
+    .tarjeta-tarifa.destacada:hover {
+        transform: scale(1.08) translateY(-10px); /* Mantiene el tamaño grande y además salta al pasar el ratón */
+    }
+}
