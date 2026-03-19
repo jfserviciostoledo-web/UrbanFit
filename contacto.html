@@ -8,102 +8,106 @@
 </head>
 <body>
 
-   <header>
-    <div class="contenedor">
-        <h1>UrbanFit Training Center</h1>
-        
-        <button class="hamburger" id="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-
-        <nav class="nav-menu" id="nav-menu">
-            <ul>
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="actividades.html">Actividades</a></li>
-                <li><a href="horarios.html">Horarios</a></li>
-                <li><a href="entrenadores.html">Entrenadores</a></li>
-                <li><a href="tarifas.html">Tarifas</a></li>
-                <li><a href="contacto.html">Contacto</a></li>
-            </ul>
-        </nav>
-    </div>
-</header>
-    <main class="contenedor">
-        <h2>Contacta con Nosotros</h2>
-        <p>¿Tienes alguna duda o quieres apuntarte? Escríbenos o visítanos, estaremos encantados de ayudarte.</p>
-
-        <div class="grid-contacto">
+    <header>
+        <div class="contenedor">
+            <h1>UrbanFit Training Center</h1>
             
-            <div class="info-directa">
-                <div class="tarjeta-info">
-                    <h3>📍 Dirección</h3>
-                    <p>[Insertar Dirección del gimnasio]</p>
-                </div>
-                <div class="tarjeta-info">
-                    <h3>🕒 Horario</h3>
-                    <p>[Insertar Horario de apertura]</p>
-                </div>
-                <div class="tarjeta-info">
-                    <h3>📞 Teléfono</h3>
-                    <p>[Insertar Teléfono de contacto]</p>
-                </div>
-                <div class="tarjeta-info">
-                    <h3>✉️ Email</h3>
-                    <p>[Insertar Correo electrónico]</p>
-                </div>
-            </div>
+            <button class="hamburger" id="hamburger" aria-label="Abrir menú de navegación">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
 
-            <div class="formulario-contacto">
-                <h3>Envíanos un mensaje</h3>
-                <form action="#" method="POST">
-                    <div class="grupo-input">
-                        <label for="nombre">Nombre completo:</label>
-                        <input type="text" id="nombre" name="nombre" required placeholder="Tu nombre">
-                    </div>
-                    <div class="grupo-input">
-                        <label for="email">Correo electrónico:</label>
-                        <input type="email" id="email" name="email" required placeholder="tuemail@ejemplo.com">
-                    </div>
-                    <div class="grupo-input">
-                        <label for="mensaje">Mensaje:</label>
-                        <textarea id="mensaje" name="mensaje" rows="5" required placeholder="¿En qué podemos ayudarte?"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primario btn-formulario">Enviar Mensaje</button>
-                </form>
-            </div>
-
+            <nav class="nav-menu" id="nav-menu">
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="actividades.html">Actividades</a></li>
+                    <li><a href="horarios.html">Horarios</a></li>
+                    <li><a href="entrenadores.html">Entrenadores</a></li>
+                    <li><a href="tarifas.html">Tarifas</a></li>
+                    <li><a href="contacto.html">Contacto</a></li>
+                </ul>
+            </nav>
         </div>
+    </header>
+
+    <main class="contenedor">
+        <section>
+            <h2>Contacta con Nosotros</h2>
+            <p>¿Tienes alguna duda o quieres apuntarte? Escríbenos o visítanos, estaremos encantados de ayudarte.</p>
+
+            <div class="grid-contacto">
+                
+                <address class="info-directa">
+                    <div class="tarjeta-info">
+                        <h3>📍 Dirección</h3>
+                        <p>[Insertar Dirección del gimnasio]</p>
+                    </div>
+                    <div class="tarjeta-info">
+                        <h3>🕒 Horario</h3>
+                        <p>[Insertar Horario de apertura]</p>
+                    </div>
+                    <div class="tarjeta-info">
+                        <h3>📞 Teléfono</h3>
+                        <p>[Insertar Teléfono de contacto]</p>
+                    </div>
+                    <div class="tarjeta-info">
+                        <h3>✉️ Email</h3>
+                        <p>[Insertar Correo electrónico]</p>
+                    </div>
+                </address>
+
+                <section class="formulario-contacto">
+                    <h3>Envíanos un mensaje</h3>
+                    <form action="#" method="POST">
+                        <div class="grupo-input">
+                            <label for="nombre">Nombre completo:</label>
+                            <input type="text" id="nombre" name="nombre" required placeholder="Tu nombre">
+                        </div>
+                        <div class="grupo-input">
+                            <label for="email">Correo electrónico:</label>
+                            <input type="email" id="email" name="email" required placeholder="tuemail@ejemplo.com">
+                        </div>
+                        <div class="grupo-input">
+                            <label for="mensaje">Mensaje:</label>
+                            <textarea id="mensaje" name="mensaje" rows="5" required placeholder="¿En qué podemos ayudarte?"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primario btn-formulario">Enviar Mensaje</button>
+                    </form>
+                </section>
+
+            </div>
+        </section>
     </main>
 
 
     <footer>
-        <div class="contenedor info-contacto">
-            <p><strong>Dirección:</strong> [Insertar Dirección del gimnasio]</p>
-            <p><strong>Horario:</strong> [Insertar Horario de apertura]</p>
-            <p><strong>Teléfono:</strong> [Insertar Teléfono de contacto]</p>
-            <p><strong>Email:</strong> [Insertar Correo electrónico]</p>
+        <div class="contenedor">
+            <div class="info-contacto">
+                <p><strong>Dirección:</strong> [Insertar Dirección del gimnasio]</p>
+                <p><strong>Horario:</strong> [Insertar Horario de apertura]</p>
+                <p><strong>Teléfono:</strong> [Insertar Teléfono de contacto]</p>
+                <p><strong>Email:</strong> [Insertar Correo electrónico]</p>
+            </div>
+            <p class="copyright">&copy; 2024 UrbanFit Training Center. Todos los derechos reservados.</p>
         </div>
-        <p class="copyright">&copy; 2024 UrbanFit Training Center. Todos los derechos reservados.</p>
     </footer>
-   <script>
-    const btn = document.getElementById('hamburger');
-    const menu = document.getElementById('nav-menu');
-    const links = document.querySelectorAll('.nav-menu a');
 
-    // Abre/Cierra el menú al pulsar el botón
-    btn.addEventListener('click', () => {
-        menu.classList.toggle('show');
-    });
+    <script>
+        const btn = document.getElementById('hamburger');
+        const menu = document.getElementById('nav-menu');
+        const links = document.querySelectorAll('.nav-menu a');
 
-    // Cierra el menú al pulsar cualquier enlace 
-    links.forEach(link => {
-        link.addEventListener('click', () => {
-            menu.classList.remove('show');
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('show');
         });
-    });
-</script>
+
+        links.forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.remove('show');
+            });
+        });
+    </script>
 
 </body>
 </html>
