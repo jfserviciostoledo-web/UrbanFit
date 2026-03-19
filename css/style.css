@@ -32,11 +32,13 @@ h1, h2, h3 {
     margin-bottom: 20px;
 }
 
-/* --- 3. CABECERA Y MENÚ --- */
+/* --- 3. CABECERA (Ancla para el menú) --- */
 header {
     background-color: var(--color-fondo);
     padding: 20px 0;
     border-bottom: 3px solid var(--color-primario);
+    position: relative; /* CRÍTICO: Para que el menú se pegue aquí */
+    z-index: 10000;      /* Siempre por encima de todo */
 }
 
 header h1 {
@@ -68,9 +70,9 @@ header .contenedor {
     color: var(--color-primario);
 }
 
-/* --- 4. BOTÓN HAMBURGUESA (MÓVIL) --- */
+/* --- 4. BOTÓN HAMBURGUESA --- */
 .hamburger {
-    display: none; /* Se activa en Media Query */
+    display: none; 
     cursor: pointer;
     background: none;
     border: none;
@@ -108,7 +110,7 @@ header .contenedor {
     border-top: 4px solid var(--color-primario);
 }
 
-/* --- 7. SECCIÓN TARIFAS (DISEÑO PREMIUM RECUPERADO) --- */
+/* --- 7. SECCIÓN TARIFAS (DISEÑO PREMIUM) --- */
 .grid-tarifas {
     display: grid;
     grid-template-columns: 1fr;
@@ -127,7 +129,6 @@ header .contenedor {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* La tarjeta que destaca (PRO) */
 .tarjeta-tarifa.destacada {
     border: 2px solid var(--color-primario);
     background-color: #1a1a1a;
@@ -170,6 +171,7 @@ header .contenedor {
     font-weight: bold;
     transition: 0.3s;
     width: 100%;
+    text-align: center;
 }
 
 .btn:hover, .btn-primario {
@@ -177,7 +179,7 @@ header .contenedor {
     color: #fff;
 }
 
-/* --- 9. OTROS ESTILOS (Entrenadores/Formulario) --- */
+/* --- 9. OTROS ESTILOS --- */
 .foto-perfil {
     width: 150px; height: 150px;
     border-radius: 50%;
@@ -206,16 +208,24 @@ footer {
     border-top: 3px solid var(--color-primario);
 }
 
-/* --- 11. MEDIA QUERIES --- */
+/* --- 11. MEDIA QUERIES (RESPONSIVE) --- */
 
-/* MÓVIL (Menú hamburguesa) */
+/* MÓVIL  */
 @media (max-width: 767px) {
     .hamburger { display: block; }
+    
     .nav-menu {
-        position: absolute; top: 100%; left: 0; width: 100%;
-        background: #1a1a1a; display: none; flex-direction: column;
+        position: absolute; 
+        top: 100%;       /* Justo debajo del header */
+        left: 0; 
+        width: 100%;
+        background: #1a1a1a; 
+        display: none;   /* JS controla el 'show' */
+        flex-direction: column;
+        z-index: 9999;   /* Por encima de las tarjetas */
         border-bottom: 3px solid var(--color-primario);
     }
+    
     .nav-menu.show { display: flex; }
     .nav-menu ul { flex-direction: column; }
     .nav-menu li { text-align: center; border-top: 1px solid #333; }
@@ -228,14 +238,13 @@ footer {
     }
 }
 
-/* PC (Diseño Final) */
+/* PC */
 @media (min-width: 1024px) {
     .grid-tarjetas, .grid-entrenadores, .grid-tarifas {
         grid-template-columns: repeat(3, 1fr);
     }
     .grid-horarios { grid-template-columns: repeat(5, 1fr); }
     
-    /* El efecto de escala para la tarifa PRO en PC */
     .tarjeta-tarifa.destacada {
         transform: scale(1.1);
         z-index: 10;
