@@ -1,9 +1,10 @@
-/* --- VARIABLES DE COLOR --- */
+/* --- VARIABLES DE DISEÑO  --- */
 :root {
-    --color-fondo: #121212; /* Negro */
-    --color-texto: #f5f5f5; /* Blanco/Gris muy claro */
-    --color-primario: #ff4500; /* Naranja/Rojo enérgico */
-    --color-secundario: #2a2a2a; /* Gris oscuro para cajas */
+    --color-fondo: #121212;
+    --color-texto: #f5f5f5;
+    --color-primario: #ff4500;
+    --color-secundario: #2a2a2a;
+    --margen-pantalla: 20px; /* El margen lateral de seguridad */
 }
 
 /* --- ESTILOS GENERALES --- */
@@ -20,10 +21,12 @@ body {
     line-height: 1.6;
 }
 
+/* --- CONTENEDOR CON VARIABLES --- */
 .contenedor {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 40px 20px;
+    /* Usamos 40px arriba/abajo y nuestra variable a los lados */
+    padding: 40px var(--margen-pantalla); 
 }
 
 h1, h2, h3 {
