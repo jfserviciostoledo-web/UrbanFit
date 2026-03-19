@@ -83,12 +83,23 @@
         </div>
         <p class="copyright">&copy; 2024 UrbanFit Training Center. Todos los derechos reservados.</p>
     </footer>
-    <script>
-            // JavaScript para el menú hamburguesa
-            document.getElementById('hamburger').addEventListener('click', function() {
-                document.getElementById('nav-menu').classList.toggle('show');
-            });
-        </script>
+   <script>
+    const btn = document.getElementById('hamburger');
+    const menu = document.getElementById('nav-menu');
+    const links = document.querySelectorAll('.nav-menu a');
+
+    // Abre/Cierra el menú al pulsar el botón
+    btn.addEventListener('click', () => {
+        menu.classList.toggle('show');
+    });
+
+    // Cierra el menú al pulsar cualquier enlace (Mejora de calidad)
+    links.forEach(link => {
+        link.addEventListener('click', () => {
+            menu.classList.remove('show');
+        });
+    });
+</script>
 
 </body>
 </html>
