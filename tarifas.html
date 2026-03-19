@@ -8,98 +8,101 @@
 </head>
 <body>
 
-   <header>
-    <div class="contenedor">
-        <h1>UrbanFit Training Center</h1>
-        
-        <button class="hamburger" id="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-
-        <nav class="nav-menu" id="nav-menu">
-            <ul>
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="actividades.html">Actividades</a></li>
-                <li><a href="horarios.html">Horarios</a></li>
-                <li><a href="entrenadores.html">Entrenadores</a></li>
-                <li><a href="tarifas.html">Tarifas</a></li>
-                <li><a href="contacto.html">Contacto</a></li>
-            </ul>
-        </nav>
-    </div>
-</header>
-    <main class="contenedor">
-        <h2>Tarifas y Bonos</h2>
-        <p>Elige el plan que mejor se adapte a tus objetivos. Sin matrícula, sin letra pequeña y con total flexibilidad para entrenar a tu ritmo.</p>
-    <br>
-        <div class="grid-tarifas">
+    <header>
+        <div class="contenedor">
+            <h1>UrbanFit Training Center</h1>
             
-            <div class="tarjeta-tarifa">
-                <h3>Básica</h3><br>
-                <p class="precio">29,90€<span>/mes</span></p>
-                <ul>
-                    <li>Acceso a sala de musculación</li>
-                    <li>Zona de entrenamiento funcional</li>
-                    <li>Acceso a vestuarios y duchas</li>
-                </ul>
-                <a href="contacto.html" class="btn">Me interesa</a>
-            </div>
+            <button class="hamburger" id="hamburger" aria-label="Abrir menú de navegación">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
 
-            <div class="tarjeta-tarifa destacada">
-                <div class="etiqueta">Más Popular</div>
-                <h3>Pro</h3><br>
-                <p class="precio">39,90€<span>/mes</span></p>
+            <nav class="nav-menu" id="nav-menu">
                 <ul>
-                    <li><strong>Todas las ventajas de la tarifa Básica</strong></li>
-                    <li>Acceso a todas las clases dirigidas (Spinning, Yoga, Pilates, etc.)</li>
-                    <li>Asesoramiento deportivo inicial</li>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="actividades.html">Actividades</a></li>
+                    <li><a href="horarios.html">Horarios</a></li>
+                    <li><a href="entrenadores.html">Entrenadores</a></li>
+                    <li><a href="tarifas.html">Tarifas</a></li>
+                    <li><a href="contacto.html">Contacto</a></li>
                 </ul>
-                <a href="contacto.html" class="btn btn-primario">Me interesa</a>
-            </div>
-
-            <div class="tarjeta-tarifa">
-                <h3>VIP Total</h3><br>
-                <p class="precio">59,90€<span>/mes</span></p>
-                <ul>
-                    <li><strong>Todas las ventajas de la tarifa Pro</strong></li>
-                    <li>1 sesión semanal de Entrenamiento Personal</li>
-                    <li>Programa de pérdida de peso personalizado</li>
-                </ul>
-                <a href="contacto.html" class="btn">Me interesa</a>
-            </div>
-
+            </nav>
         </div>
+    </header>
+
+    <main class="contenedor">
+        <section>
+            <h2>Tarifas y Bonos</h2>
+            <p>Elige el plan que mejor se adapte a tus objetivos. Sin matrícula, sin letra pequeña y con total flexibilidad para entrenar a tu ritmo.</p>
+            
+            <div class="grid-tarifas">
+                
+                <article class="tarjeta-tarifa">
+                    <h3>Básica</h3>
+                    <p class="precio">29,90€<span>/mes</span></p>
+                    <ul>
+                        <li>Acceso a sala de musculación</li>
+                        <li>Zona de entrenamiento funcional</li>
+                        <li>Acceso a vestuarios y duchas</li>
+                    </ul>
+                    <a href="contacto.html" class="btn">Me interesa</a>
+                </article>
+
+                <article class="tarjeta-tarifa destacada">
+                    <div class="etiqueta">Más Popular</div>
+                    <h3>Pro</h3>
+                    <p class="precio">39,90€<span>/mes</span></p>
+                    <ul>
+                        <li><strong>Todas las ventajas de la tarifa Básica</strong></li>
+                        <li>Acceso a todas las clases dirigidas (Spinning, Yoga, Pilates, etc.)</li>
+                        <li>Asesoramiento deportivo inicial</li>
+                    </ul>
+                    <a href="contacto.html" class="btn btn-primario">Me interesa</a>
+                </article>
+
+                <article class="tarjeta-tarifa">
+                    <h3>VIP Total</h3>
+                    <p class="precio">59,90€<span>/mes</span></p>
+                    <ul>
+                        <li><strong>Todas las ventajas de la tarifa Pro</strong></li>
+                        <li>1 sesión semanal de Entrenamiento Personal</li>
+                        <li>Programa de pérdida de peso personalizado</li>
+                    </ul>
+                    <a href="contacto.html" class="btn">Me interesa</a>
+                </article>
+
+            </div>
+        </section>
     </main>
-  
 
     <footer>
-        <div class="contenedor info-contacto">
-            <p><strong>Dirección:</strong> [Insertar Dirección del gimnasio]</p>
-            <p><strong>Horario:</strong> [Insertar Horario de apertura]</p>
-            <p><strong>Teléfono:</strong> [Insertar Teléfono de contacto]</p>
-            <p><strong>Email:</strong> [Insertar Correo electrónico]</p>
+        <div class="contenedor">
+            <div class="info-contacto">
+                <p><strong>Dirección:</strong> [Insertar Dirección del gimnasio]</p>
+                <p><strong>Horario:</strong> [Insertar Horario de apertura]</p>
+                <p><strong>Teléfono:</strong> [Insertar Teléfono de contacto]</p>
+                <p><strong>Email:</strong> [Insertar Correo electrónico]</p>
+            </div>
+            <p class="copyright">&copy; 2024 UrbanFit Training Center. Todos los derechos reservados.</p>
         </div>
-        <p class="copyright">&copy; 2024 UrbanFit Training Center. Todos los derechos reservados.</p>
     </footer>
- <script>
-    const btn = document.getElementById('hamburger');
-    const menu = document.getElementById('nav-menu');
-    const links = document.querySelectorAll('.nav-menu a');
 
-    // Abre/Cierra el menú al pulsar el botón
-    btn.addEventListener('click', () => {
-        menu.classList.toggle('show');
-    });
+    <script>
+        const btn = document.getElementById('hamburger');
+        const menu = document.getElementById('nav-menu');
+        const links = document.querySelectorAll('.nav-menu a');
 
-    // Cierra el menú al pulsar cualquier enlace 
-    links.forEach(link => {
-        link.addEventListener('click', () => {
-            menu.classList.remove('show');
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('show');
         });
-    });
-</script>
+
+        links.forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.remove('show');
+            });
+        });
+    </script>
 
 </body>
 </html>
