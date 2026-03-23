@@ -22,5 +22,24 @@
         </form>
         <p>¿Ya tienes cuenta? <a href="login.html">Inicia sesión aquí</a></p>
     </main>
+    <script>
+        document.getElementById('form-registro').addEventListener('submit', async (e) => {
+            e.preventDefault(); // Evita que la página se recargue
+    
+            const nombre = document.getElementById('nombre').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+    
+            // Enviamos los datos al servidor (Backend)
+            const respuesta = await fetch('http://localhost:3000/registro', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nombre, email, password })
+            });
+    
+            const datos = await respuesta.json();
+            alert(datos.mensaje);
+        });
+    </script>
 </body>
 </html>
