@@ -73,21 +73,16 @@ app.get('/clases', (req, res) => {
     });
 });
 
-// 5. RUTA PARA REALIZAR UNA RESERVA (NUEVA)
+// 5. RUTA PARA REALIZAR UNA RESERVA
 app.post('/reservar', (req, res) => {
     const { nombreUsuario, claseId } = req.body;
-
-    // Primero buscamos el ID del usuario por su nombre
     const sqlUsuario = 'SELECT id FROM usuarios WHERE nombre = ?';
     
     db.query(sqlUsuario, [nombreUsuario], (err, results) => {
         if (err || results.length === 0) {
             return res.status(404).json({ mensaje: 'Usuario no encontrado' });
         }
-
         const usuarioId = results[0].id;
-
-        // Ahora insertamos la reserva en la tabla de reservas
         const sqlReserva = 'INSERT INTO reservas (usuario_id, clase_id) VALUES (?, ?)';
         
         db.query(sqlReserva, [usuarioId, claseId], (err) => {
@@ -100,7 +95,33 @@ app.post('/reservar', (req, res) => {
     });
 });
 
-// 6. INICIO DEL SERVIDOR
+// 6. RUTA PARA VER MIS RESERVAS 
+app.get('/mis-reservas/:nombreUsuario', (req, res) => {
+    const nombre = req.params.nombreUsuario;
+    const sql = `
+        SELECT reservas.id, clases.nombre, clases.hora 
+        FROM reservas 
+        JOIN usuarios ON reservas.usuario_id = usuarios.id 
+        JOIN clases ON reservas.clase_id = clases.id 
+        WHERE usuarios.nombre = ?`;
+
+    db.query(sql, [nombre], (err, results) => {
+        if (err) return res.status(500).json({ mensaje: 'Error al consultar' });
+        res.json(results);
+    });
+});
+
+// 7. RUTA PARA CANCELAR RESERVA
+app.delete('/cancelar/:id', (req, res) => {
+    const id = req.params.id;
+    const sql = 'DELETE FROM reservas WHERE id = ?';
+    db.query(sql, [id], (err) => {
+        if (err) return res.status(500).json({ mensaje: 'Error al cancelar' });
+        res.json({ mensaje: 'Reserva cancelada correctamente' });
+    });
+});
+
+// 8. INICIO DEL SERVIDOR
 const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`🚀 SERVIDOR CORRIENDO EN http://localhost:${PORT}`);
