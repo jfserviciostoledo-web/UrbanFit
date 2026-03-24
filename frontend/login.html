@@ -2,22 +2,30 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | UrbanFit</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
+    <link rel="stylesheet" href="css/style.css"> </head>
 <body>
-    <main class="contenedor">
-        <h2>Acceso de Socios</h2>
+    <main class="contenedor-login" style="max-width: 400px; margin: 50px auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px;">
+        <h2 style="text-align: center; color: #ff4500;">Acceso de Socios</h2>
         <form id="form-login">
-            <label for="email">Email:</label>
-            <input type="email" id="email" required>
+            <div style="margin-bottom: 15px;">
+                <label for="email">Email:</label>
+                <input type="email" id="email" required style="width: 100%; padding: 8px; margin-top: 5px;">
+            </div>
 
-            <label for="password">Contraseña:</label>
-            <input type="password" id="password" required>
+            <div style="margin-bottom: 15px;">
+                <label for="password">Contraseña:</label>
+                <input type="password" id="password" required style="width: 100%; padding: 8px; margin-top: 5px;">
+            </div>
 
-            <button type="submit" class="btn">Entrar</button>
+            <button type="submit" style="width: 100%; padding: 10px; background-color: #ff4500; color: white; border: none; cursor: pointer; font-weight: bold;">
+                Entrar
+            </button>
         </form>
-        <p>¿No eres socio? <a href="registro.html">Regístrate aquí</a></p>
+        <p style="text-align: center; margin-top: 15px;">
+            ¿No eres socio? <a href="registro.html" style="color: #ff4500;">Regístrate aquí</a>
+        </p>
     </main>
 
     <script>
@@ -27,22 +35,27 @@
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
-            // Llamamos a la nueva ruta de login que pusimos en el backend
-            const respuesta = await fetch('http://localhost:3000/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password })
-            });
+            try {
+                const respuesta = await fetch('http://localhost:3000/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
 
-            const datos = await respuesta.json();
+                const datos = await respuesta.json();
 
-            if (respuesta.ok) {
-                alert(datos.mensaje);
-                // Si todo va bien, mándalo a la página principal del gimnasio
-                window.location.href = 'index.html'; 
-            } else {
-                // Si el email no existe o la contraseña está mal
-                alert("❌ Error: " + datos.mensaje);
+                if (respuesta.ok) {
+                    // GUARDAMOS EL NOMBRE QUE VIENE DEL BACKEND
+                    localStorage.setItem('nombreUsuario', datos.nombre);
+                    alert(datos.mensaje);
+                    // Redirigimos al index
+                    window.location.href = 'index.html'; 
+                } else {
+                    alert("❌ Error: " + datos.mensaje);
+                }
+            } catch (error) {
+                console.error("Error al conectar con el servidor:", error);
+                alert("No se pudo conectar con el servidor. ¿Está encendido node app.js?");
             }
         });
     </script>
