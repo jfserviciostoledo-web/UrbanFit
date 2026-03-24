@@ -38,7 +38,7 @@ app.post('/registro', async (req, res) => {
     }
 });
 
-// 3. RUTA DE LOGIN (Envía el nombre para el perfil de usuario)
+// 3. RUTA DE LOGIN
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
     const sql = 'SELECT * FROM usuarios WHERE email = ?';
@@ -51,7 +51,6 @@ app.post('/login', (req, res) => {
         const coinciden = await bcrypt.compare(password, usuario.password);
 
         if (coinciden) {
-            // Enviamos el nombre para que el frontend lo guarde en localStorage
             res.json({ 
                 mensaje: `¡Hola de nuevo, ${usuario.nombre}!`,
                 nombre: usuario.nombre 
@@ -70,11 +69,38 @@ app.get('/clases', (req, res) => {
             console.error('Error al consultar clases:', err);
             return res.status(500).json({ mensaje: 'Error al obtener las clases' });
         }
-        res.json(results); // Envía la lista de clases como JSON al frontend
+        res.json(results);
     });
 });
 
-// 5. INICIO DEL SERVIDOR
+// 5. RUTA PARA REALIZAR UNA RESERVA (NUEVA)
+app.post('/reservar', (req, res) => {
+    const { nombreUsuario, claseId } = req.body;
+
+    // Primero buscamos el ID del usuario por su nombre
+    const sqlUsuario = 'SELECT id FROM usuarios WHERE nombre = ?';
+    
+    db.query(sqlUsuario, [nombreUsuario], (err, results) => {
+        if (err || results.length === 0) {
+            return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+        }
+
+        const usuarioId = results[0].id;
+
+        // Ahora insertamos la reserva en la tabla de reservas
+        const sqlReserva = 'INSERT INTO reservas (usuario_id, clase_id) VALUES (?, ?)';
+        
+        db.query(sqlReserva, [usuarioId, claseId], (err) => {
+            if (err) {
+                console.error('Error al reservar:', err);
+                return res.status(500).json({ mensaje: 'No se pudo realizar la reserva' });
+            }
+            res.json({ mensaje: '✅ Reserva realizada con éxito' });
+        });
+    });
+});
+
+// 6. INICIO DEL SERVIDOR
 const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`🚀 SERVIDOR CORRIENDO EN http://localhost:${PORT}`);
