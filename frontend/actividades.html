@@ -115,18 +115,17 @@
                 window.location.reload(); 
             });
 
-            // CARGAR LAS CLASES DESDE EL BACKEND
             cargarClases();
         });
 
-        // --- 3. CARGAR CLASES DESDE LA BASE DE DATOS ---
+        // --- 3. CARGAR CLASES ---
         async function cargarClases() {
             try {
                 const respuesta = await fetch('http://localhost:3000/clases');
                 const clases = await respuesta.json();
                 const contenedor = document.getElementById('contenedor-clases');
                 
-                contenedor.innerHTML = ''; // Limpiar mensaje de carga
+                contenedor.innerHTML = ''; 
 
                 clases.forEach(clase => {
                     contenedor.innerHTML += `
@@ -141,20 +140,41 @@
                 });
             } catch (error) {
                 console.error("Error al cargar clases:", error);
-                document.getElementById('contenedor-clases').innerHTML = "<p>No se pudieron cargar las clases. Revisa el servidor.</p>";
+                document.getElementById('contenedor-clases').innerHTML = "<p>No se pudieron cargar las clases.</p>";
             }
         }
 
-        function reservar(id) {
-            const nombre = localStorage.getItem('nombreUsuario');
-            if(!nombre) {
+        // --- 4. FUNCIÓN RESERVAR (ACTUALIZADA PARA EL BACKEND) ---
+        async function reservar(claseId) {
+            const nombreUsuario = localStorage.getItem('nombreUsuario');
+
+            if (!nombreUsuario) {
                 alert("Debes iniciar sesión para reservar.");
                 window.location.href = "login.html";
-            } else {
-                alert(`¡Genial ${nombre}! Has seleccionado la clase con ID: ${id}. Próximamente activaremos las reservas reales.`);
+                return;
+            }
+
+            try {
+                const respuesta = await fetch('http://localhost:3000/reservar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nombreUsuario, claseId })
+                });
+
+                const datos = await respuesta.json();
+
+                if (respuesta.ok) {
+                    alert(datos.mensaje); // "Reserva realizada con éxito"
+                } else {
+                    alert("❌ Error: " + datos.mensaje);
+                }
+            } catch (error) {
+                console.error("Error en la reserva:", error);
+                alert("Hubo un problema al conectar con el servidor.");
             }
         }
     </script>
 </body>
 </html>
+
 
