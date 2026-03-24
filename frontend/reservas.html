@@ -18,10 +18,21 @@
     <header>
         <div class="contenedor">
             <h1>UrbanFit Training Center</h1>
-            <nav class="nav-menu">
+            
+            <button class="hamburger" id="hamburger" aria-label="Abrir menú de navegación">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <nav class="nav-menu" id="nav-menu">
                 <ul>
                     <li><a href="index.html">Inicio</a></li>
                     <li><a href="actividades.html">Actividades</a></li>
+                    <li><a href="horarios.html">Horarios</a></li>
+                    <li><a href="entrenadores.html">Entrenadores</a></li>
+                    <li><a href="tarifas.html">Tarifas</a></li>
+                    <li><a href="contacto.html">Contacto</a></li>
                     <li><a href="reservas.html">Mis Reservas</a></li>
                 </ul>
             </nav>
@@ -37,8 +48,22 @@
         </div>
     </main>
 
+    <footer>
+        <div class="contenedor">
+            <p class="copyright">&copy; 2026 UrbanFit Training Center. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
     <script>
-        // --- LÓGICA DE SESIÓN ---
+        // --- 1. LÓGICA DEL MENÚ HAMBURGUESA (RESTAURADA) ---
+        const btnHam = document.getElementById('hamburger');
+        const menu = document.getElementById('nav-menu');
+        
+        btnHam.addEventListener('click', () => {
+            menu.classList.toggle('show');
+        });
+
+        // --- 2. LÓGICA DE SESIÓN Y CARGA ---
         window.addEventListener('load', () => {
             const nombre = localStorage.getItem('nombreUsuario');
             if (!nombre) {
@@ -58,7 +83,7 @@
             window.location.href = "index.html";
         });
 
-        // --- CARGAR RESERVAS DESDE EL BACKEND ---
+        // --- 3. CARGAR RESERVAS ---
         async function cargarMisReservas(nombre) {
             try {
                 const respuesta = await fetch(`http://localhost:3000/mis-reservas/${nombre}`);
@@ -66,17 +91,17 @@
                 const contenedor = document.getElementById('lista-reservas');
                 
                 if (reservas.length === 0) {
-                    contenedor.innerHTML = "<p>Aún no tienes ninguna clase reservada. ¡Anímate a empezar!</p>";
+                    contenedor.innerHTML = "<p>Aún no tienes ninguna clase reservada.</p>";
                     return;
                 }
 
                 contenedor.innerHTML = '';
                 reservas.forEach(res => {
                     contenedor.innerHTML += `
-                        <article class="tarjeta" style="border-top: 4px solid #ff4500;">
+                        <article class="tarjeta">
                             <h3>${res.nombre}</h3>
                             <p><strong>Hora:</strong> ${res.hora.substring(0, 5)}h</p>
-                            <button class="btn" style="background-color: #d9534f; border-color: #d43f3a; color: white;" 
+                            <button class="btn" style="background-color: #d9534f; color: white; border: none;" 
                                 onclick="cancelarReserva(${res.id})">
                                 Cancelar Reserva
                             </button>
@@ -88,7 +113,7 @@
             }
         }
 
-        // --- CANCELAR RESERVA ---
+        // --- 4. CANCELAR RESERVA ---
         async function cancelarReserva(id) {
             if (!confirm("¿Seguro que quieres cancelar esta clase?")) return;
 
@@ -96,14 +121,11 @@
                 const respuesta = await fetch(`http://localhost:3000/cancelar/${id}`, {
                     method: 'DELETE'
                 });
-                const datos = await respuesta.json();
-
                 if (respuesta.ok) {
-                    alert(datos.mensaje);
-                    location.reload(); // Recarga para actualizar la lista
+                    location.reload();
                 }
             } catch (error) {
-                alert("No se pudo cancelar la reserva.");
+                alert("No se pudo cancelar.");
             }
         }
     </script>
