@@ -15,7 +15,7 @@ const db = mysql.createConnection({
     database: 'urbanfit_db'
 });
 
-// 2. INTENTAR CONECTAR (Esto es lo que te falta ver en la consola)
+// 2. INTENTAR CONECTAR
 db.connect((err) => {
     if (err) {
         console.error('❌ ERROR AL CONECTAR A MYSQL:', err.message);
