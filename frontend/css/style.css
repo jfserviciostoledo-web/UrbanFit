@@ -210,7 +210,6 @@ footer {
 
 /* --- 11. MEDIA QUERIES (RESPONSIVE) --- */
 
-/* MÓVIL (1 columna para todo) */
 @media (max-width: 767px) {
     .hamburger { display: block; }
     
@@ -228,23 +227,20 @@ footer {
     .nav-menu li { text-align: center; border-top: 1px solid #333; }
 }
 
-/* TABLETS Y PORTÁTILES (2 columnas para Entrenadores) */
 @media (min-width: 768px) {
     .grid-tarjetas, .grid-horarios, .grid-entrenadores, .grid-tarifas, .grid-contacto {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
-/* PC GRANDES */
 @media (min-width: 1024px) {
     .grid-tarjetas, .grid-tarifas {
         grid-template-columns: repeat(3, 1fr);
     }
     
-    /* Mantenemos Entrenadores en 2 columnas para que los 4 queden cuadrados (2 arriba, 2 abajo) */
     .grid-entrenadores {
         grid-template-columns: repeat(2, 1fr);
-        max-width: 900px; /* Estrechamos un poco el contenedor para que no queden muy estirados */
+        max-width: 900px;
         margin-left: auto;
         margin-right: auto;
     }
@@ -258,4 +254,38 @@ footer {
     .tarjeta-tarifa.destacada:hover {
         transform: scale(1.1) translateY(-10px);
     }
+}
+
+/* --- 12. BARRA DE SOCIO  --- */
+.barra-socio {
+    background-color: #000; /* Fondo negro puro para que resalte del header */
+    color: var(--color-texto);
+    padding: 10px 0;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #333;
+}
+
+.barra-socio .contenedor {
+    display: flex;
+    justify-content: flex-end; /* Alinea el saludo a la derecha */
+    align-items: center;
+    padding: 0 var(--margen-pantalla);
+}
+
+#btn-logout {
+    background-color: var(--color-primario);
+    color: white;
+    border: none;
+    padding: 5px 12px;
+    margin-left: 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    transition: background 0.3s ease;
+}
+
+#btn-logout:hover {
+    background-color: #e63e00;
 }
