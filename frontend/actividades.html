@@ -48,22 +48,37 @@
             <div class="grid-tarjetas">
                 <article class="tarjeta">
                     <h3>Sala de Musculación</h3>
-                    <p>Acceso a sala de musculación equipada con la maquinaria más moderna.</p>
+                    <p>Acceso a sala de musculación equipada con la maquinaria más moderna para tu entrenamiento de fuerza.</p>
                 </article>
 
                 <article class="tarjeta">
                     <h3>Entrenamiento Funcional</h3>
-                    <p>Zonas específicas para mejorar tu fuerza, agilidad y resistencia.</p>
+                    <p>Zonas específicas donde mejorarás tu fuerza, agilidad y resistencia de forma dinámica.</p>
                 </article>
 
                 <article class="tarjeta">
                     <h3>Entrenamiento Personal</h3>
-                    <p>Servicios adaptados a tu nivel con atención exclusiva.</p>
+                    <p>Servicios adaptados a tu nivel con atención exclusiva para maximizar tus resultados.</p>
+                </article>
+
+                <article class="tarjeta">
+                    <h3>Programas de Pérdida de Peso</h3>
+                    <p>Planes específicos diseñados para reducir grasa corporal de forma saludable y progresiva.</p>
                 </article>
 
                 <article class="tarjeta">
                     <h3>Asesoramiento Deportivo</h3>
-                    <p>Guía integral para resolver tus dudas y alcanzar tus objetivos.</p>
+                    <p>Guía integral por expertos para resolver tus dudas y orientar tu carrera deportiva.</p>
+                </article>
+
+                <article class="tarjeta">
+                    <h3>Actividades Grupales</h3>
+                    <p>Entrena en comunidad con nuestras sesiones colectivas diseñadas para todos los niveles.</p>
+                </article>
+
+                <article class="tarjeta">
+                    <h3>Planes de Entrenamiento Personalizados</h3>
+                    <p>Rutinas a medida basadas en tus objetivos, condición física y disponibilidad horaria.</p>
                 </article>
             </div>
         </section>
@@ -71,8 +86,8 @@
         <hr style="margin: 50px 0; border: 1px solid #333;">
 
         <section id="clases-realtime">
-            <h2>Horario de Clases Hoy</h2>
-            <p>Consulta nuestras clases disponibles y reserva tu plaza.</p>
+            <h2>Horario de Clases Hoy (Clases Dirigidas)</h2>
+            <p>Consulta nuestras sesiones de spinning, yoga, pilates y cross training guiadas por expertos.</p>
             
             <div id="contenedor-clases" class="grid-tarjetas">
                 <p>Cargando clases...</p>
@@ -145,7 +160,7 @@
             }
         }
 
-        // --- 4. FUNCIÓN RESERVAR (ACTUALIZADA PARA EL BACKEND) ---
+        // --- 4. FUNCIÓN RESERVAR ---
         async function reservar(claseId) {
             const nombreUsuario = localStorage.getItem('nombreUsuario');
 
@@ -165,7 +180,7 @@
                 const datos = await respuesta.json();
 
                 if (respuesta.ok) {
-                    alert(datos.mensaje); // "Reserva realizada con éxito"
+                    alert(datos.mensaje);
                 } else {
                     alert("❌ Error: " + datos.mensaje);
                 }
