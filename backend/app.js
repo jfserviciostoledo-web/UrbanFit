@@ -7,7 +7,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 1. CONFIGURACIÓN DE CONEXIÓN
+// 1. CONFIGURACIÓN DE CONEXIÓN A LA BASE DE DATOS
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -33,10 +33,12 @@ app.post('/registro', async (req, res) => {
             if (err) return res.status(500).json({ mensaje: 'Error al registrar' });
             res.json({ mensaje: `¡Bienvenido ${nombre}! Registro completado 🔒` });
         });
-    } catch (e) { res.status(500).json({ mensaje: 'Error interno' }); }
+    } catch (e) { 
+        res.status(500).json({ mensaje: 'Error interno en el servidor' }); 
+    }
 });
 
-// 3. RUTA DE LOGIN (La que envía el nombre)
+// 3. RUTA DE LOGIN (Envía el nombre para el perfil de usuario)
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
     const sql = 'SELECT * FROM usuarios WHERE email = ?';
@@ -49,7 +51,7 @@ app.post('/login', (req, res) => {
         const coinciden = await bcrypt.compare(password, usuario.password);
 
         if (coinciden) {
-            // Enviamos el nombre para que el index.html lo use
+            // Enviamos el nombre para que el frontend lo guarde en localStorage
             res.json({ 
                 mensaje: `¡Hola de nuevo, ${usuario.nombre}!`,
                 nombre: usuario.nombre 
@@ -59,4 +61,21 @@ app.post('/login', (req, res) => {
         }
     });
 });
-app.listen(3000, () => console.log('🚀 SERVIDOR SEGURO EN PORT 3000'));
+
+// 4. RUTA PARA OBTENER TODAS LAS CLASES
+app.get('/clases', (req, res) => {
+    const sql = 'SELECT * FROM clases';
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error('Error al consultar clases:', err);
+            return res.status(500).json({ mensaje: 'Error al obtener las clases' });
+        }
+        res.json(results); // Envía la lista de clases como JSON al frontend
+    });
+});
+
+// 5. INICIO DEL SERVIDOR
+const PORT = 3000;
+app.listen(PORT, () => {
+    console.log(`🚀 SERVIDOR CORRIENDO EN http://localhost:${PORT}`);
+});
