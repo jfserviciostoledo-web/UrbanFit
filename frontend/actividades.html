@@ -8,6 +8,13 @@
 </head>
 <body>
 
+    <div class="barra-socio">
+        <div class="contenedor">
+            <span id="txt-saludo">Bienvenido, Invitado</span>
+            <button id="btn-logout" style="display:none;">Cerrar Sesión</button>
+        </div>
+    </div>
+
     <header>
         <div class="contenedor">
             <h1>UrbanFit Training Center</h1>
@@ -26,6 +33,7 @@
                     <li><a href="entrenadores.html">Entrenadores</a></li>
                     <li><a href="tarifas.html">Tarifas</a></li>
                     <li><a href="contacto.html">Contacto</a></li>
+                    <li id="li-login"><a href="login.html">Login</a></li>
                 </ul>
             </nav>
         </div>
@@ -34,81 +42,119 @@
     <main class="contenedor">
         <section>
             <h2>Nuestras Actividades y Servicios</h2>
-            <p>En UrbanFit Training Center ofrecemos una amplia variedad de opciones para que encuentres la que mejor se adapta a ti. Estos son nuestros servicios:</p>
+            <p>En UrbanFit Training Center ofrecemos una amplia variedad de opciones para que encuentres la que mejor se adapta a ti.</p>
 
             <div class="grid-tarjetas">
-                
                 <article class="tarjeta">
                     <h3>Sala de Musculación</h3>
-                    <p>Acceso a sala de musculación equipada con la maquinaria más moderna para tu entrenamiento de fuerza.</p>
+                    <p>Acceso a sala de musculación equipada con la maquinaria más moderna.</p>
                 </article>
 
                 <article class="tarjeta">
                     <h3>Entrenamiento Funcional</h3>
-                    <p>Zonas específicas para entrenamiento funcional donde mejorarás tu fuerza, agilidad y resistencia.</p>
-                </article>
-
-                <article class="tarjeta">
-                    <h3>Clases Dirigidas</h3>
-                    <p>Disfruta de nuestras sesiones de spinning, yoga, pilates y cross training guiadas por expertos.</p>
+                    <p>Zonas específicas para mejorar tu fuerza, agilidad y resistencia.</p>
                 </article>
 
                 <article class="tarjeta">
                     <h3>Entrenamiento Personal</h3>
-                    <p>Servicios de entrenamiento personal adaptados a tu nivel, ideales si buscas atención exclusiva.</p>
-                </article>
-
-                <article class="tarjeta">
-                    <h3>Pérdida de Peso</h3>
-                    <p>Programas de pérdida de peso diseñados para obtener resultados de forma saludable y progresiva.</p>
+                    <p>Servicios adaptados a tu nivel con atención exclusiva.</p>
                 </article>
 
                 <article class="tarjeta">
                     <h3>Asesoramiento Deportivo</h3>
-                    <p>Asesoramiento deportivo integral para resolver tus dudas y guiarte en tu camino.</p>
+                    <p>Guía integral para resolver tus dudas y alcanzar tus objetivos.</p>
                 </article>
+            </div>
+        </section>
 
-                <article class="tarjeta">
-                    <h3>Actividades Grupales</h3>
-                    <p>Únete a nuestras actividades grupales y entrena en un ambiente motivador.</p>
-                </article>
+        <hr style="margin: 50px 0; border: 1px solid #333;">
 
-                <article class="tarjeta">
-                    <h3>Planes Personalizados</h3>
-                    <p>Desarrollamos planes de entrenamiento personalizados basados en tus objetivos específicos.</p>
-                </article>
-
+        <section id="clases-realtime">
+            <h2>Horario de Clases Hoy</h2>
+            <p>Consulta nuestras clases disponibles y reserva tu plaza.</p>
+            
+            <div id="contenedor-clases" class="grid-tarjetas">
+                <p>Cargando clases...</p>
             </div>
         </section>
     </main>
 
-   <footer>
-    <div class="contenedor">
-        <address class="info-contacto">
-            <p><strong>Dirección:</strong> Carrer d'Aragó, 284, L'Eixample, 08007 Barcelona</p>
-            <p><strong>Horario:</strong> Lunes-Viernes: 06:00-22:30 | Sábados: 08:00-20:00 | Domingos y Festivos: 09:00-14:00</p>
-            <p><strong>Teléfono:</strong> <a href="tel:+34932154872" style="color:inherit; text-decoration:none;">+34 932 154 872</a></p>
-            <p><strong>Email:</strong> <a href="mailto:info@vibe-fitnessbcn.com" style="color:inherit; text-decoration:none;">info@vibe-fitnessbcn.com</a></p>
-        </address>
-        <p class="copyright">&copy; 2026 UrbanFit Training Center. Todos los derechos reservados.</p>
-    </div>
-</footer>
+    <footer>
+        <div class="contenedor">
+            <address class="info-contacto">
+                <p><strong>Dirección:</strong> Carrer d'Aragó, 284, L'Eixample, 08007 Barcelona</p>
+                <p><strong>Horario:</strong> Lunes-Viernes: 06:00-22:30 | Sábados: 08:00-20:00 | Domingos y Festivos: 09:00-14:00</p>
+                <p><strong>Teléfono:</strong> <a href="tel:+34932154872" style="color:inherit; text-decoration:none;">+34 932 154 872</a></p>
+                <p><strong>Email:</strong> <a href="mailto:info@vibe-fitnessbcn.com" style="color:inherit; text-decoration:none;">info@vibe-fitnessbcn.com</a></p>
+            </address>
+            <p class="copyright">&copy; 2026 UrbanFit Training Center. Todos los derechos reservados.</p>
+        </div>
+    </footer>
 
     <script>
+        // --- 1. LÓGICA DEL MENÚ ---
         const btn = document.getElementById('hamburger');
         const menu = document.getElementById('nav-menu');
-        const links = document.querySelectorAll('.nav-menu a');
+        btn.addEventListener('click', () => menu.classList.toggle('show'));
 
-        btn.addEventListener('click', () => {
-            menu.classList.toggle('show');
-        });
+        // --- 2. LÓGICA DE SESIÓN (Saludo) ---
+        window.addEventListener('load', () => {
+            const nombreGuardado = localStorage.getItem('nombreUsuario');
+            const txtSaludo = document.getElementById('txt-saludo');
+            const btnLogout = document.getElementById('btn-logout');
+            const liLogin = document.getElementById('li-login');
 
-        links.forEach(link => {
-            link.addEventListener('click', () => {
-                menu.classList.remove('show');
+            if (nombreGuardado) {
+                txtSaludo.innerHTML = `🏋️‍♂️ Hola, <strong>${nombreGuardado}</strong>`;
+                btnLogout.style.display = "inline-block";
+                if(liLogin) liLogin.style.display = "none";
+            }
+
+            btnLogout.addEventListener('click', () => {
+                localStorage.removeItem('nombreUsuario');
+                window.location.reload(); 
             });
-        });
-    </script>
 
+            // CARGAR LAS CLASES DESDE EL BACKEND
+            cargarClases();
+        });
+
+        // --- 3. CARGAR CLASES DESDE LA BASE DE DATOS ---
+        async function cargarClases() {
+            try {
+                const respuesta = await fetch('http://localhost:3000/clases');
+                const clases = await respuesta.json();
+                const contenedor = document.getElementById('contenedor-clases');
+                
+                contenedor.innerHTML = ''; // Limpiar mensaje de carga
+
+                clases.forEach(clase => {
+                    contenedor.innerHTML += `
+                        <article class="tarjeta">
+                            <h3 style="color: #ff4500;">${clase.nombre}</h3>
+                            <p><strong>Instructor:</strong> ${clase.entrenador}</p>
+                            <p><strong>Hora:</strong> ${clase.hora.substring(0, 5)}h</p>
+                            <p><strong>Cupo:</strong> ${clase.cupo_max} plazas</p>
+                            <button class="btn" onclick="reservar(${clase.id})">Reservar Clase</button>
+                        </article>
+                    `;
+                });
+            } catch (error) {
+                console.error("Error al cargar clases:", error);
+                document.getElementById('contenedor-clases').innerHTML = "<p>No se pudieron cargar las clases. Revisa el servidor.</p>";
+            }
+        }
+
+        function reservar(id) {
+            const nombre = localStorage.getItem('nombreUsuario');
+            if(!nombre) {
+                alert("Debes iniciar sesión para reservar.");
+                window.location.href = "login.html";
+            } else {
+                alert(`¡Genial ${nombre}! Has seleccionado la clase con ID: ${id}. Próximamente activaremos las reservas reales.`);
+            }
+        }
+    </script>
 </body>
 </html>
+
