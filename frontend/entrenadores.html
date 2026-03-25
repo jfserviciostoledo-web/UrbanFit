@@ -8,6 +8,13 @@
 </head>
 <body>
 
+    <div class="barra-socio">
+        <div class="contenedor">
+            <span id="txt-saludo">Bienvenido, Invitado</span>
+            <button id="btn-logout" style="display:none;">Cerrar Sesión</button>
+        </div>
+    </div>
+
     <header>
         <div class="contenedor">
             <h1>UrbanFit Training Center</h1>
@@ -40,35 +47,35 @@
 
           <div class="grid-entrenadores">
     
-    <article class="tarjeta-entrenador">
-        <img src="https://placehold.co/300x300/2a2a2a/ff4500?text=Marc" alt="Foto de Marc Soler" class="foto-perfil">
-        <h3>Marc Soler</h3>
-        <p class="especialidad">Especialista en Powerlifting y Fuerza</p>
-        <p>Marc te ayudará a maximizar tu fuerza absoluta con programas específicos de Powerlifting y técnica de levantamientos pesados.</p>
-    </article>
+                <article class="tarjeta-entrenador">
+                    <img src="https://placehold.co/300x300/2a2a2a/ff4500?text=Marc" alt="Foto de Marc Soler" class="foto-perfil">
+                    <h3>Marc Soler</h3>
+                    <p class="especialidad">Especialista en Powerlifting y Fuerza</p>
+                    <p>Marc te ayudará a maximizar tu fuerza absoluta con programas específicos de Powerlifting y técnica de levantamientos pesados.</p>
+                </article>
 
-    <article class="tarjeta-entrenador">
-        <img src="https://placehold.co/300x300/2a2a2a/ff4500?text=Laia" alt="Foto de Laia Font" class="foto-perfil">
-        <h3>Laia Font</h3>
-        <p class="especialidad">Instructora de Yoga y Pilates</p>
-        <p>Mejora tu movilidad funcional, flexibilidad y control corporal con las sesiones dirigidas por Laia.</p>
-    </article>
+                <article class="tarjeta-entrenador">
+                    <img src="https://placehold.co/300x300/2a2a2a/ff4500?text=Laia" alt="Foto de Laia Font" class="foto-perfil">
+                    <h3>Laia Font</h3>
+                    <p class="especialidad">Instructora de Yoga y Pilates</p>
+                    <p>Mejora tu movilidad funcional, flexibilidad y control corporal con las sesiones dirigidas por Laia.</p>
+                </article>
 
-    <article class="tarjeta-entrenador">
-        <img src="https://placehold.co/300x300/2a2a2a/ff4500?text=Jordi" alt="Foto de Jordi Martínez" class="foto-perfil">
-        <h3>Jordi Martínez</h3>
-        <p class="especialidad">Coach de CrossFit y HIIT</p>
-        <p>Si buscas intensidad y superación diaria, Jordi te guiará en entrenamientos de alta exigencia metabólica.</p>
-    </article>
+                <article class="tarjeta-entrenador">
+                    <img src="https://placehold.co/300x300/2a2a2a/ff4500?text=Jordi" alt="Foto de Jordi Martínez" class="foto-perfil">
+                    <h3>Jordi Martínez</h3>
+                    <p class="especialidad">Coach de CrossFit y HIIT</p>
+                    <p>Si buscas intensidad y superación diaria, Jordi te guiará en entrenamientos de alta exigencia metabólica.</p>
+                </article>
 
-    <article class="tarjeta-entrenador">
-        <img src="https://placehold.co/300x300/2a2a2a/ff4500?text=Carla" alt="Foto de Carla Rodríguez" class="foto-perfil">
-        <h3>Carla Rodríguez</h3>
-        <p class="especialidad">Experta en Nutrición y Transformación</p>
-        <p>Carla combina el entrenamiento con asesoramiento nutricional para lograr cambios físicos sostenibles y saludables.</p>
-    </article>
+                <article class="tarjeta-entrenador">
+                    <img src="https://placehold.co/300x300/2a2a2a/ff4500?text=Carla" alt="Foto de Carla Rodríguez" class="foto-perfil">
+                    <h3>Carla Rodríguez</h3>
+                    <p class="especialidad">Experta en Nutrición y Transformación</p>
+                    <p>Carla combina el entrenamiento con asesoramiento nutricional para lograr cambios físicos sostenibles y saludables.</p>
+                </article>
 
-</div>
+            </div>
         </section>
     </main>
 
@@ -85,6 +92,7 @@
 </footer>
 
     <script>
+        // --- LÓGICA DEL MENÚ HAMBURGUESA ---
         const btn = document.getElementById('hamburger');
         const menu = document.getElementById('nav-menu');
         const links = document.querySelectorAll('.nav-menu a');
@@ -96,6 +104,25 @@
         links.forEach(link => {
             link.addEventListener('click', () => {
                 menu.classList.remove('show');
+            });
+        });
+
+        // --- LÓGICA DE SESIÓN (Saludo y Perfil) ---
+        window.addEventListener('load', () => {
+            const nombreGuardado = localStorage.getItem('nombreUsuario');
+            const txtSaludo = document.getElementById('txt-saludo');
+            const btnLogout = document.getElementById('btn-logout');
+            const liLogin = document.getElementById('li-login');
+
+            if (nombreGuardado) {
+                txtSaludo.innerHTML = `🏋️‍♂️ Hola, <strong>${nombreGuardado}</strong>`;
+                btnLogout.style.display = "inline-block";
+                if(liLogin) liLogin.style.display = "none";
+            }
+
+            btnLogout.addEventListener('click', () => {
+                localStorage.removeItem('nombreUsuario');
+                window.location.href = "index.html"; 
             });
         });
     </script>
