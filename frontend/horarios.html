@@ -8,6 +8,13 @@
 </head>
 <body>
 
+    <div class="barra-socio">
+        <div class="contenedor">
+            <span id="txt-saludo">Bienvenido, Invitado</span>
+            <button id="btn-logout" style="display:none;">Cerrar Sesión</button>
+        </div>
+    </div>
+
     <header>
         <div class="contenedor">
             <h1>UrbanFit Training Center</h1>
@@ -94,7 +101,7 @@
         </section>
     </main>
 
-   <footer>
+    <footer>
     <div class="contenedor">
         <address class="info-contacto">
             <p><strong>Dirección:</strong> Carrer d'Aragó, 284, L'Eixample, 08007 Barcelona</p>
@@ -107,6 +114,7 @@
 </footer>
 
     <script>
+        // --- 1. LÓGICA DEL MENÚ HAMBURGUESA ---
         const btn = document.getElementById('hamburger');
         const menu = document.getElementById('nav-menu');
         const links = document.querySelectorAll('.nav-menu a');
@@ -120,8 +128,26 @@
                 menu.classList.remove('show');
             });
         });
+
+        // --- 2. LÓGICA DE SESIÓN ---
+        window.addEventListener('load', () => {
+            const nombreGuardado = localStorage.getItem('nombreUsuario');
+            const txtSaludo = document.getElementById('txt-saludo');
+            const btnLogout = document.getElementById('btn-logout');
+            const liLogin = document.getElementById('li-login');
+
+            if (nombreGuardado) {
+                txtSaludo.innerHTML = `🏋️‍♂️ Hola, <strong>${nombreGuardado}</strong>`;
+                btnLogout.style.display = "inline-block";
+                if(liLogin) liLogin.style.display = "none";
+            }
+
+            btnLogout.addEventListener('click', () => {
+                localStorage.removeItem('nombreUsuario');
+                window.location.href = "index.html"; 
+            });
+        });
     </script>
 
 </body>
 </html>
-
