@@ -127,7 +127,9 @@
             }
 
             btnLogout.addEventListener('click', () => {
+                // MODIFICADO: Limpiamos ambos datos
                 localStorage.removeItem('nombreUsuario');
+                localStorage.removeItem('usuarioId');
                 window.location.reload(); 
             });
 
@@ -160,11 +162,11 @@
             }
         }
 
-        // --- 4. FUNCIÓN RESERVAR ---
+        // --- 4. FUNCIÓN RESERVAR  ---
         async function reservar(claseId) {
-            const nombreUsuario = localStorage.getItem('nombreUsuario');
+            const usuarioId = localStorage.getItem('usuarioId'); // Cambiado de nombre a ID
 
-            if (!nombreUsuario) {
+            if (!usuarioId) {
                 alert("Debes iniciar sesión para reservar.");
                 window.location.href = "login.html";
                 return;
@@ -174,7 +176,7 @@
                 const respuesta = await fetch('http://localhost:3000/reservar', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ nombreUsuario, claseId })
+                    body: JSON.stringify({ usuarioId, claseId }) // Enviamos ID al backend
                 });
 
                 const datos = await respuesta.json();
@@ -192,5 +194,4 @@
     </script>
 </body>
 </html>
-
 
