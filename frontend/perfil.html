@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil | UrbanFit</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="barra-socio">
+        <div class="contenedor">
+            <span id="txt-saludo">Cargando...</span>
+            <a href="index.html" style="color: white; margin-left: 15px; text-decoration: none;">🏠 Inicio</a>
+            <button id="btn-logout" style="margin-left: 10px;">Cerrar Sesión</button>
+        </div>
+    </div>
+
+    <main class="contenedor" style="margin-top: 50px;">
+        <div class="tarjeta" style="max-width: 500px; margin: 0 auto; padding: 30px; border-top: 4px solid #ff4500;">
+            <h2 style="color: #ff4500; text-align: center;">Mi Perfil de Socio</h2>
+            <hr style="border: 0; border-top: 1px solid #444; margin: 20px 0;">
+            
+            <div id="info-usuario">
+                <p><strong>Nombre:</strong> <span id="perf-nombre">...</span></p>
+                <p><strong>Email:</strong> <span id="perf-email">...</span></p>
+                <p><strong>Estado:</strong> <span style="color: #5cb85c;">● Activo</span></p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        window.addEventListener('load', async () => {
+            const id = localStorage.getItem('usuarioId');
+            const nombre = localStorage.getItem('nombreUsuario');
+            
+            if (!id) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            document.getElementById('txt-saludo').innerHTML = `🏋️‍♂️ Perfil de <strong>${nombre}</strong>`;
+
+            try {
+                const res = await fetch(`http://localhost:3000/perfil/${id}`);
+                const user = await res.json();
+                
+                document.getElementById('perf-nombre').innerText = user.nombre;
+                document.getElementById('perf-email').innerText = user.email;
+            } catch (error) {
+                alert("Error al cargar los datos del perfil.");
+            }
+        });
+
+        document.getElementById('btn-logout').addEventListener('click', () => {
+            localStorage.clear();
+            window.location.href = "index.html";
+        });
+    </script>
+</body>
+</html>
