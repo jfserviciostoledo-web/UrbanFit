@@ -28,40 +28,56 @@
         </div>
     </main>
 
-    <script>
-    window.addEventListener('load', async () => {
-        // 1. Recuperamos los datos de sesión
-        const id = localStorage.getItem('usuarioId');
-        const nombre = localStorage.getItem('nombreUsuario');
-        
-        // 2. Si no hay ID, redirigimos al login 
-        if (!id) {
-            window.location.href = "login.html";
-            return;
-        }
-
-        // 3. Mostramos el saludo en la barra superior
-        document.getElementById('txt-saludo').innerHTML = `🏋️‍♂️ Perfil de <strong>${nombre}</strong>`;
-
-        // 4. Consultamos los datos reales al Backend usando el ID
-        try {
-            const res = await fetch(`http://localhost:3000/perfil/${id}`);
-            const user = await res.json();
+   <script>
+        window.addEventListener('load', async () => {
+            // 1. Recuperamos los datos de sesión (ID y el nuevo TOKEN)
+            const id = localStorage.getItem('usuarioId');
+            const nombre = localStorage.getItem('nombreUsuario');
+            const token = localStorage.getItem('token');
             
-            // Rellenamos los campos del perfil
-            document.getElementById('perf-nombre').innerText = user.nombre;
-            document.getElementById('perf-email').innerText = user.email;
-        } catch (error) {
-            console.error("Error:", error);
-            alert("Error al cargar los datos del perfil.");
-        }
+            // 2. Si no hay ID o no hay TOKEN, nos manda al login
+            if (!id || !token) {
+                window.location.href = "login.html";
+                return;
+            }
 
-        // 5. Lógica de Logout 
-        document.getElementById('btn-logout').addEventListener('click', () => {
-            localStorage.clear(); // Limpia nombre e ID de golpe
-            window.location.href = "index.html";
+            // 3. Mostramos el saludo en la barra superior
+            document.getElementById('txt-saludo').innerHTML = `🏋️‍♂️ Perfil de <strong>${nombre}</strong>`;
+
+            // 4. Consultamos los datos reales al Backend enviando la "llave"
+            try {
+                const res = await fetch(`http://localhost:3000/perfil/${id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': token 
+                    }
+                });
+
+                if (!res.ok) {
+                    // Si el token ha caducado o es falso, el servidor dirá que no es OK
+                    localStorage.clear();
+                    window.location.href = "login.html";
+                    return;
+                }
+
+                const user = await res.json();
+                
+                // Rellenamos los campos del perfil
+                document.getElementById('perf-nombre').innerText = user.nombre;
+                document.getElementById('perf-email').innerText = user.email;
+
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Error al cargar los datos del perfil.");
+            }
+
+            // 5. Lógica de Logout (Borra ID, Nombre y TOKEN)
+            document.getElementById('btn-logout').addEventListener('click', () => {
+                localStorage.clear(); // Limpia todo el bolsillo del navegador
+                window.location.href = "index.html";
+            });
         });
-    });
-</script>
+    </script>
 </body>
 </html>
