@@ -46,11 +46,11 @@
                 const datos = await respuesta.json();
 
                 if (respuesta.ok) {
+                    // --- PUNTO CLAVE: Guardamos Nombre e ID ---
                     localStorage.setItem('nombreUsuario', datos.nombre);
-                    localStorage.setItem('usuarioId', datos.id); // Ahora usamos el ID único
+                    localStorage.setItem('usuarioId', datos.id);
                     
                     alert(datos.mensaje);
-                    // Redirigimos al index
                     window.location.href = 'index.html'; 
                 } else {
                     alert("❌ Error: " + datos.mensaje);
