@@ -130,25 +130,30 @@
             });
         });
 
-        // --- 2. LÓGICA DE SESIÓN ---
+        // --- 2. LÓGICA DE SESIÓN (Saludo) ---
         window.addEventListener('load', () => {
             const nombreGuardado = localStorage.getItem('nombreUsuario');
             const txtSaludo = document.getElementById('txt-saludo');
             const btnLogout = document.getElementById('btn-logout');
             const liLogin = document.getElementById('li-login');
-
+            const linkPerfil = document.getElementById('link-perfil'); 
+        
             if (nombreGuardado) {
                 txtSaludo.innerHTML = `🏋️‍♂️ Hola, <strong>${nombreGuardado}</strong>`;
                 btnLogout.style.display = "inline-block";
+                
+                if(linkPerfil) linkPerfil.style.display = "inline-block"; 
+                
                 if(liLogin) liLogin.style.display = "none";
             }
-
+        
             btnLogout.addEventListener('click', () => {
+                // Limpiamos todo el rastro de la sesión
                 localStorage.removeItem('nombreUsuario');
+                localStorage.removeItem('usuarioId');
                 window.location.href = "index.html"; 
             });
         });
     </script>
-
 </body>
 </html>
