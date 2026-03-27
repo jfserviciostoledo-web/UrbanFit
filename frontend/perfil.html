@@ -29,32 +29,39 @@
     </main>
 
     <script>
-        window.addEventListener('load', async () => {
-            const id = localStorage.getItem('usuarioId');
-            const nombre = localStorage.getItem('nombreUsuario');
+    window.addEventListener('load', async () => {
+        // 1. Recuperamos los datos de sesión
+        const id = localStorage.getItem('usuarioId');
+        const nombre = localStorage.getItem('nombreUsuario');
+        
+        // 2. Si no hay ID, redirigimos al login 
+        if (!id) {
+            window.location.href = "login.html";
+            return;
+        }
+
+        // 3. Mostramos el saludo en la barra superior
+        document.getElementById('txt-saludo').innerHTML = `🏋️‍♂️ Perfil de <strong>${nombre}</strong>`;
+
+        // 4. Consultamos los datos reales al Backend usando el ID
+        try {
+            const res = await fetch(`http://localhost:3000/perfil/${id}`);
+            const user = await res.json();
             
-            if (!id) {
-                window.location.href = "login.html";
-                return;
-            }
+            // Rellenamos los campos del perfil
+            document.getElementById('perf-nombre').innerText = user.nombre;
+            document.getElementById('perf-email').innerText = user.email;
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Error al cargar los datos del perfil.");
+        }
 
-            document.getElementById('txt-saludo').innerHTML = `🏋️‍♂️ Perfil de <strong>${nombre}</strong>`;
-
-            try {
-                const res = await fetch(`http://localhost:3000/perfil/${id}`);
-                const user = await res.json();
-                
-                document.getElementById('perf-nombre').innerText = user.nombre;
-                document.getElementById('perf-email').innerText = user.email;
-            } catch (error) {
-                alert("Error al cargar los datos del perfil.");
-            }
-        });
-
+        // 5. Lógica de Logout 
         document.getElementById('btn-logout').addEventListener('click', () => {
-            localStorage.clear();
+            localStorage.clear(); // Limpia nombre e ID de golpe
             window.location.href = "index.html";
         });
-    </script>
+    });
+</script>
 </body>
 </html>
