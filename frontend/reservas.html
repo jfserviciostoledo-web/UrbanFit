@@ -61,88 +61,114 @@
     </footer>
 
     <script>
-    // --- 1. LÓGICA DEL MENÚ HAMBURGUESA ---
-    const btnHam = document.getElementById('hamburger');
-    const menu = document.getElementById('nav-menu');
-    
-    if (btnHam) {
-        btnHam.addEventListener('click', () => {
-            menu.classList.toggle('show');
-        });
-    }
-
-    // --- 2. LÓGICA DE SESIÓN Y CARGA ---
-    window.addEventListener('load', () => {
-        const nombre = localStorage.getItem('nombreUsuario');
-        const id = localStorage.getItem('usuarioId'); 
-        if (!id) {
-            alert("Debes iniciar sesión para ver tus reservas.");
-            window.location.href = "login.html";
-            return;
+        // --- 1. LÓGICA DEL MENÚ HAMBURGUESA ---
+        const btnHam = document.getElementById('hamburger');
+        const menu = document.getElementById('nav-menu');
+        
+        if (btnHam) {
+            btnHam.addEventListener('click', () => {
+                menu.classList.toggle('show');
+            });
         }
-        
-        // Rellenamos la barra de socio
-        document.getElementById('txt-saludo').innerHTML = `🏋️‍♂️ Hola, <strong>${nombre}</strong>`;
-        document.getElementById('btn-logout').style.display = "inline-block";
-        
-        const linkPerfil = document.getElementById('link-perfil');
-        if (linkPerfil) linkPerfil.style.display = "inline-block";
-        
-        // Cargamos las reservas del usuario usando su ID único
-        cargarMisReservas(id);
 
-        document.getElementById('btn-logout').addEventListener('click', () => {
-            localStorage.removeItem('nombreUsuario');
-            localStorage.removeItem('usuarioId'); // LIMPIEZA COMPLETA
-            window.location.href = "index.html";
-        });
-    });
+        // --- 2. LÓGICA DE SESIÓN Y CARGA ---
+        window.addEventListener('load', () => {
+            const nombre = localStorage.getItem('nombreUsuario');
+            const id = localStorage.getItem('usuarioId'); 
+            const token = localStorage.getItem('token');
 
-    // --- 3. CARGAR RESERVAS ---
-    async function cargarMisReservas(usuarioId) {
-        try {
-            const respuesta = await fetch(`http://localhost:3000/mis-reservas/${usuarioId}`);
-            const reservas = await respuesta.json();
-            const contenedor = document.getElementById('lista-reservas');
-            
-            if (reservas.length === 0) {
-                contenedor.innerHTML = "<p>Aún no tienes ninguna clase reservada.</p>";
+            // Si falta el ID o el Token, no puede estar aquí
+            if (!id || !token) {
+                alert("Debes iniciar sesión para ver tus reservas.");
+                window.location.href = "login.html";
                 return;
             }
+            
+            document.getElementById('txt-saludo').innerHTML = `🏋️‍♂️ Hola, <strong>${nombre}</strong>`;
+            document.getElementById('btn-logout').style.display = "inline-block";
+            
+            const linkPerfil = document.getElementById('link-perfil');
+            if (linkPerfil) linkPerfil.style.display = "inline-block";
+            
+            // Cargamos las reservas pasando el ID y el Token
+            cargarMisReservas(id, token);
 
-            contenedor.innerHTML = '';
-            reservas.forEach(res => {
-                contenedor.innerHTML += `
-                    <article class="tarjeta">
-                        <h3>${res.nombre}</h3>
-                        <p><strong>Hora:</strong> ${res.hora.substring(0, 5)}h</p>
-                        <button class="btn" style="background-color: #d9534f; color: white; border: none;" 
-                            onclick="cancelarReserva(${res.id})">
-                            Cancelar Reserva
-                        </button>
-                    </article>
-                `;
+            document.getElementById('btn-logout').addEventListener('click', () => {
+                localStorage.clear(); // Limpieza absoluta (ID, Nombre y Token)
+                window.location.href = "index.html";
             });
-        } catch (error) {
-            console.error("Error al cargar reservas:", error);
-            document.getElementById('lista-reservas').innerHTML = "<p>Error al conectar con el servidor.</p>";
-        }
-    }
-    // --- 4. CANCELAR RESERVA ---
-    async function cancelarReserva(id) {
-        if (!confirm("¿Seguro que quieres cancelar esta clase?")) return;
+        });
 
-        try {
-            const respuesta = await fetch(`http://localhost:3000/cancelar/${id}`, {
-                method: 'DELETE'
-            });
-            if (respuesta.ok) {
-                location.reload();
+        // --- 3. CARGAR RESERVAS (Protegida) ---
+        async function cargarMisReservas(usuarioId, token) {
+            try {
+                const respuesta = await fetch(`http://localhost:3000/mis-reservas/${usuarioId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': token, 
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!respuesta.ok) {
+                    if (respuesta.status === 401 || respuesta.status === 403) {
+                        localStorage.clear();
+                        window.location.href = "login.html";
+                    }
+                    throw new Error("No se pudieron cargar las reservas");
+                }
+
+                const reservas = await respuesta.json();
+                const contenedor = document.getElementById('lista-reservas');
+                
+                if (reservas.length === 0) {
+                    contenedor.innerHTML = "<p>Aún no tienes ninguna clase reservada.</p>";
+                    return;
+                }
+
+                contenedor.innerHTML = '';
+                reservas.forEach(res => {
+                    contenedor.innerHTML += `
+                        <article class="tarjeta">
+                            <h3>${res.nombre}</h3>
+                            <p><strong>Hora:</strong> ${res.hora.substring(0, 5)}h</p>
+                            <button class="btn" style="background-color: #d9534f; color: white; border: none;" 
+                                onclick="cancelarReserva(${res.id})">
+                                Cancelar Reserva
+                            </button>
+                        </article>
+                    `;
+                });
+            } catch (error) {
+                console.error("Error al cargar reservas:", error);
+                document.getElementById('lista-reservas').innerHTML = "<p>Error al conectar con el servidor.</p>";
             }
-        } catch (error) {
-            alert("No se pudo cancelar la reserva.");
         }
-    }
-</script>
+
+        // --- 4. CANCELAR RESERVA (Protegida) ---
+        async function cancelarReserva(id) {
+            if (!confirm("¿Seguro que quieres cancelar esta clase?")) return;
+            
+            const token = localStorage.getItem('token'); 
+
+            try {
+                const respuesta = await fetch(`http://localhost:3000/cancelar/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': token 
+                    }
+                });
+
+                if (respuesta.ok) {
+                    alert("Reserva cancelada correctamente.");
+                    location.reload();
+                } else {
+                    alert("No tienes permiso para cancelar esta reserva.");
+                }
+            } catch (error) {
+                alert("No se pudo conectar con el servidor.");
+            }
+        }
+    </script>
 </body>
 </html>
