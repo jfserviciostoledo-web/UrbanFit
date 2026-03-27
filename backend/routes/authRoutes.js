@@ -1,10 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
+const authMiddleware = require('../middlewares/authMiddleware'); 
 
-// Definimos los caminos para los usuarios
+// 1. RUTAS PÚBLICAS 
 router.post('/registro', authController.registro);
 router.post('/login', authController.login);
-router.get('/perfil/:id', authController.obtenerPerfil);
+
+// 2. RUTA PROTEGIDA 
+// El perfil ahora requiere que el usuario esté "logueado" de verdad
+router.get('/perfil/:id', authMiddleware, authController.obtenerPerfil);
 
 module.exports = router;
