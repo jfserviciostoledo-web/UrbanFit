@@ -53,7 +53,7 @@ app.post('/login', (req, res) => {
         if (coinciden) {
             res.json({ 
                 mensaje: `¡Hola de nuevo, ${usuario.nombre}!`,
-                id: usuario.id, // IMPORTANTE: Enviamos el ID
+                id: usuario.id,
                 nombre: usuario.nombre 
             });
         } else {
@@ -72,19 +72,34 @@ app.get('/clases', (req, res) => {
 
 // 5. REALIZAR RESERVA 
 app.post('/reservar', (req, res) => {
-    const { usuarioId, claseId } = req.body; // Recibimos IDs directamente
+    const { usuarioId, claseId } = req.body;
 
-    // Comprobamos si ya existe la reserva
+    // A. Comprobar si ya existe la reserva
     const sqlCheck = 'SELECT * FROM reservas WHERE usuario_id = ? AND clase_id = ?';
     db.query(sqlCheck, [usuarioId, claseId], (err, results) => {
-        if (results.length > 0) {
+        if (results && results.length > 0) {
             return res.status(400).json({ mensaje: 'Ya tienes una reserva para esta clase' });
         }
 
-        const sqlReserva = 'INSERT INTO reservas (usuario_id, clase_id) VALUES (?, ?)';
-        db.query(sqlReserva, [usuarioId, claseId], (err) => {
-            if (err) return res.status(500).json({ mensaje: 'Error al reservar' });
-            res.json({ mensaje: '✅ Reserva realizada con éxito' });
+        // B. Comprobar disponibilidad de plazas
+        const sqlPlazas = 'SELECT cupo_max, inscritos FROM clases WHERE id = ?';
+        db.query(sqlPlazas, [claseId], (err, clase) => {
+            if (err || clase.length === 0) return res.status(404).json({ mensaje: 'Clase no encontrada' });
+
+            if (clase[0].inscritos >= clase[0].cupo_max) {
+                return res.status(400).json({ mensaje: 'Clase completa. No quedan plazas disponibles 🚫' });
+            }
+
+            // C. Insertar reserva y actualizar contador
+            const sqlInsert = 'INSERT INTO reservas (usuario_id, clase_id) VALUES (?, ?)';
+            db.query(sqlInsert, [usuarioId, claseId], (err) => {
+                if (err) return res.status(500).json({ mensaje: 'Error al reservar' });
+
+                // Sumamos 1 al contador de la clase
+                db.query('UPDATE clases SET inscritos = inscritos + 1 WHERE id = ?', [claseId]);
+                
+                res.json({ mensaje: '✅ Reserva realizada con éxito' });
+            });
         });
     });
 });
@@ -104,16 +119,29 @@ app.get('/mis-reservas/:usuarioId', (req, res) => {
     });
 });
 
-// 7. CANCELAR RESERVA
+// 7. CANCELAR RESERVA (LIBERA PLAZA)
 app.delete('/cancelar/:id', (req, res) => {
-    const id = req.params.id;
-    db.query('DELETE FROM reservas WHERE id = ?', [id], (err) => {
-        if (err) return res.status(500).json({ mensaje: 'Error al cancelar' });
-        res.json({ mensaje: 'Reserva cancelada correctamente' });
+    const reservaId = req.params.id;
+
+    // Primero identificamos la clase para restar el contador
+    db.query('SELECT clase_id FROM reservas WHERE id = ?', [reservaId], (err, results) => {
+        if (err || results.length === 0) return res.status(404).json({ mensaje: 'Reserva no encontrada' });
+
+        const claseId = results[0].clase_id;
+
+        // Borramos la reserva
+        db.query('DELETE FROM reservas WHERE id = ?', [reservaId], (err) => {
+            if (err) return res.status(500).json({ mensaje: 'Error al cancelar' });
+
+            // Restamos 1 al contador de la clase
+            db.query('UPDATE clases SET inscritos = inscritos - 1 WHERE id = ?', [claseId]);
+            
+            res.json({ mensaje: 'Reserva cancelada y plaza liberada correctamente' });
+        });
     });
 });
 
-// 8. NUEVA RUTA: OBTENER PERFIL DE USUARIO
+// 8. OBTENER PERFIL DE USUARIO
 app.get('/perfil/:id', (req, res) => {
     const id = req.params.id;
     db.query('SELECT nombre, email FROM usuarios WHERE id = ?', [id], (err, results) => {
