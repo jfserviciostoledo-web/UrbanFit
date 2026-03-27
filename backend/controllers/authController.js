@@ -1,5 +1,9 @@
 const bcrypt = require('bcrypt');
 const db = require('../config/db');
+const jwt = require('jsonwebtoken');
+
+// CLAVE SECRETA 
+const SECRET_KEY = 'CLAVE_SECRETA_URBANFIT';
 
 // 1. REGISTRO DE USUARIOS
 exports.registro = async (req, res) => {
@@ -16,7 +20,7 @@ exports.registro = async (req, res) => {
     }
 };
 
-// 2. LOGIN DE USUARIOS
+// 2. LOGIN DE USUARIOS (Ahora genera TOKEN)
 exports.login = (req, res) => {
     const { email, password } = req.body;
     const sql = 'SELECT * FROM usuarios WHERE email = ?';
@@ -29,8 +33,17 @@ exports.login = (req, res) => {
         const coinciden = await bcrypt.compare(password, usuario.password);
 
         if (coinciden) {
+            // 2. GENERAMOS EL TOKEN JWT
+            const token = jwt.sign(
+                { id: usuario.id, nombre: usuario.nombre }, 
+                SECRET_KEY, 
+                { expiresIn: '2h' } // El token caduca en 2 horas
+            );
+
+            // 3. ENVIAMOS EL TOKEN AL FRONTEND
             res.json({ 
                 mensaje: `¡Hola de nuevo, ${usuario.nombre}!`,
+                token: token, 
                 id: usuario.id,
                 nombre: usuario.nombre 
             });
