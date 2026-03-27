@@ -112,37 +112,42 @@
         // --- 1. LÓGICA DEL MENÚ ---
         const btn = document.getElementById('hamburger');
         const menu = document.getElementById('nav-menu');
-        btn.addEventListener('click', () => menu.classList.toggle('show'));
-
-        // --- 2. LÓGICA DE SESIÓN (Saludo) ---
+        if (btn) {
+            btn.addEventListener('click', () => menu.classList.toggle('show'));
+        }
     
+        // --- 2. LÓGICA DE SESIÓN (Saludo y Perfil) ---
         window.addEventListener('load', () => {
             const nombreGuardado = localStorage.getItem('nombreUsuario');
+            const usuarioId = localStorage.getItem('usuarioId');
             const txtSaludo = document.getElementById('txt-saludo');
             const btnLogout = document.getElementById('btn-logout');
             const liLogin = document.getElementById('li-login');
-            const linkPerfil = document.getElementById('link-perfil'); // <--- NUEVA LÍNEA
-        
-            if (nombreGuardado) {
+            const linkPerfil = document.getElementById('link-perfil');
+    
+            if (nombreGuardado && usuarioId) {
                 txtSaludo.innerHTML = `🏋️‍♂️ Hola, <strong>${nombreGuardado}</strong>`;
                 btnLogout.style.display = "inline-block";
                 
-                if(linkPerfil) linkPerfil.style.display = "inline-block"; 
+                // Mostrar enlace al perfil
+                if (linkPerfil) linkPerfil.style.display = "inline-block";
                 
-                if(liLogin) liLogin.style.display = "none";
+                // Ocultar opción de Login en el nav
+                if (liLogin) liLogin.style.display = "none";
             }
-        
-            btnLogout.addEventListener('click', () => {
-                // Limpiamos todo el rastro de la sesión
-                localStorage.removeItem('nombreUsuario');
-                localStorage.removeItem('usuarioId');
-                window.location.href = "index.html"; 
-            });
-        
+    
+            if (btnLogout) {
+                btnLogout.addEventListener('click', () => {
+                    // Limpieza total de la sesión
+                    localStorage.removeItem('nombreUsuario');
+                    localStorage.removeItem('usuarioId');
+                    window.location.href = "index.html"; 
+                });
+            }
+    
             cargarClases(); 
         });
-        });
-
+    
         // --- 3. CARGAR CLASES ---
         async function cargarClases() {
             try {
@@ -151,7 +156,7 @@
                 const contenedor = document.getElementById('contenedor-clases');
                 
                 contenedor.innerHTML = ''; 
-
+    
                 clases.forEach(clase => {
                     contenedor.innerHTML += `
                         <article class="tarjeta">
@@ -168,30 +173,31 @@
                 document.getElementById('contenedor-clases').innerHTML = "<p>No se pudieron cargar las clases.</p>";
             }
         }
-
-        // --- 4. FUNCIÓN RESERVAR  ---
+    
+        // --- 4. FUNCIÓN RESERVAR (Usa ID y maneja duplicados) ---
         async function reservar(claseId) {
-            const usuarioId = localStorage.getItem('usuarioId'); // Cambiado de nombre a ID
-
+            const usuarioId = localStorage.getItem('usuarioId');
+    
             if (!usuarioId) {
                 alert("Debes iniciar sesión para reservar.");
                 window.location.href = "login.html";
                 return;
             }
-
+    
             try {
                 const respuesta = await fetch('http://localhost:3000/reservar', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ usuarioId, claseId }) // Enviamos ID al backend
+                    body: JSON.stringify({ usuarioId, claseId })
                 });
-
+    
                 const datos = await respuesta.json();
-
+    
                 if (respuesta.ok) {
                     alert(datos.mensaje);
                 } else {
-                    alert("❌ Error: " + datos.mensaje);
+                    // Aquí capturamos el error 400 si la reserva ya existe
+                    alert("❌ " + datos.mensaje);
                 }
             } catch (error) {
                 console.error("Error en la reserva:", error);
