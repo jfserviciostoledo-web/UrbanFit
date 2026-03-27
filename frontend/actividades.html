@@ -115,40 +115,38 @@
         if (btn) {
             btn.addEventListener('click', () => menu.classList.toggle('show'));
         }
-    
+
         // --- 2. LÓGICA DE SESIÓN (Saludo y Perfil) ---
         window.addEventListener('load', () => {
             const nombreGuardado = localStorage.getItem('nombreUsuario');
             const usuarioId = localStorage.getItem('usuarioId');
+            const token = localStorage.getItem('token'); // Recuperamos el token
+            
             const txtSaludo = document.getElementById('txt-saludo');
             const btnLogout = document.getElementById('btn-logout');
             const liLogin = document.getElementById('li-login');
             const linkPerfil = document.getElementById('link-perfil');
-    
-            if (nombreGuardado && usuarioId) {
+
+            // Si tenemos nombre, ID y TOKEN, el usuario está "dentro"
+            if (nombreGuardado && usuarioId && token) {
                 txtSaludo.innerHTML = `🏋️‍♂️ Hola, <strong>${nombreGuardado}</strong>`;
                 btnLogout.style.display = "inline-block";
-                
-                // Mostrar enlace al perfil
                 if (linkPerfil) linkPerfil.style.display = "inline-block";
-                
-                // Ocultar opción de Login en el nav
                 if (liLogin) liLogin.style.display = "none";
             }
-    
+
             if (btnLogout) {
                 btnLogout.addEventListener('click', () => {
-                    // Limpieza total de la sesión
-                    localStorage.removeItem('nombreUsuario');
-                    localStorage.removeItem('usuarioId');
+                    // Limpieza total: borramos nombre, ID y el TOKEN
+                    localStorage.clear(); 
                     window.location.href = "index.html"; 
                 });
             }
-    
+
             cargarClases(); 
         });
-    
-        // --- 3. CARGAR CLASES ---
+
+        // --- 3. CARGAR CLASES (Ruta Pública) ---
         async function cargarClases() {
             try {
                 const respuesta = await fetch('http://localhost:3000/clases');
@@ -156,7 +154,7 @@
                 const contenedor = document.getElementById('contenedor-clases');
                 
                 contenedor.innerHTML = ''; 
-    
+
                 clases.forEach(clase => {
                     contenedor.innerHTML += `
                         <article class="tarjeta">
@@ -173,31 +171,39 @@
                 document.getElementById('contenedor-clases').innerHTML = "<p>No se pudieron cargar las clases.</p>";
             }
         }
-    
-        // --- 4. FUNCIÓN RESERVAR (Usa ID y maneja duplicados) ---
+
+        // --- 4. FUNCIÓN RESERVAR (PROTEGIDA CON TOKEN) ---
         async function reservar(claseId) {
             const usuarioId = localStorage.getItem('usuarioId');
-    
-            if (!usuarioId) {
+            const token = localStorage.getItem('token'); // Recuperamos la llave
+
+            if (!usuarioId || !token) {
                 alert("Debes iniciar sesión para reservar.");
                 window.location.href = "login.html";
                 return;
             }
-    
+
             try {
                 const respuesta = await fetch('http://localhost:3000/reservar', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': token 
+                    },
                     body: JSON.stringify({ usuarioId, claseId })
                 });
-    
+
                 const datos = await respuesta.json();
-    
+
                 if (respuesta.ok) {
-                    alert(datos.mensaje);
+                    alert("✅ " + datos.mensaje);
                 } else {
-                    // Aquí capturamos el error 400 si la reserva ya existe
+                    // Si el token es inválido o el servidor detecta error
                     alert("❌ " + datos.mensaje);
+                    if (respuesta.status === 401 || respuesta.status === 403) {
+                        localStorage.clear();
+                        window.location.href = "login.html";
+                    }
                 }
             } catch (error) {
                 console.error("Error en la reserva:", error);
