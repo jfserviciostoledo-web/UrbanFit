@@ -8,10 +8,11 @@
 </head>
 <body>
 
-    <div class="barra-socio">
+  <div class="barra-socio">
         <div class="contenedor">
             <span id="txt-saludo">Bienvenido, Invitado</span>
-            <button id="btn-logout" style="display:none;">Cerrar Sesión</button>
+            <a href="perfil.html" id="link-perfil" style="display:none; color: #ff4500; margin-left: 15px; font-weight: bold; text-decoration: none;">👤 Mi Perfil</a>
+            <button id="btn-logout" style="display:none; margin-left: 10px;">Cerrar Sesión</button>
         </div>
     </div>
 
@@ -114,26 +115,32 @@
         btn.addEventListener('click', () => menu.classList.toggle('show'));
 
         // --- 2. LÓGICA DE SESIÓN (Saludo) ---
+    
         window.addEventListener('load', () => {
             const nombreGuardado = localStorage.getItem('nombreUsuario');
             const txtSaludo = document.getElementById('txt-saludo');
             const btnLogout = document.getElementById('btn-logout');
             const liLogin = document.getElementById('li-login');
-
+            const linkPerfil = document.getElementById('link-perfil'); // <--- NUEVA LÍNEA
+        
             if (nombreGuardado) {
                 txtSaludo.innerHTML = `🏋️‍♂️ Hola, <strong>${nombreGuardado}</strong>`;
                 btnLogout.style.display = "inline-block";
+                
+                if(linkPerfil) linkPerfil.style.display = "inline-block"; 
+                
                 if(liLogin) liLogin.style.display = "none";
             }
-
+        
             btnLogout.addEventListener('click', () => {
-                // MODIFICADO: Limpiamos ambos datos
+                // Limpiamos todo el rastro de la sesión
                 localStorage.removeItem('nombreUsuario');
                 localStorage.removeItem('usuarioId');
-                window.location.reload(); 
+                window.location.href = "index.html"; 
             });
-
-            cargarClases();
+        
+            cargarClases(); 
+        });
         });
 
         // --- 3. CARGAR CLASES ---
