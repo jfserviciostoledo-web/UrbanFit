@@ -48,7 +48,7 @@
         </div>
     </main>
 
-     <footer>
+    <footer>
         <div class="contenedor">
             <address class="info-contacto">
                 <p><strong>Dirección:</strong> Carrer d'Aragó, 284, L'Eixample, 08007 Barcelona</p>
@@ -61,7 +61,7 @@
     </footer>
 
     <script>
-        // --- 1. LÓGICA DEL MENÚ HAMBURGUESA (RESTAURADA) ---
+        // --- 1. LÓGICA DEL MENÚ HAMBURGUESA ---
         const btnHam = document.getElementById('hamburger');
         const menu = document.getElementById('nav-menu');
         
@@ -72,7 +72,9 @@
         // --- 2. LÓGICA DE SESIÓN Y CARGA ---
         window.addEventListener('load', () => {
             const nombre = localStorage.getItem('nombreUsuario');
-            if (!nombre) {
+            const id = localStorage.getItem('usuarioId'); // USAMOS EL ID
+
+            if (!id) {
                 alert("Debes iniciar sesión para ver tus reservas.");
                 window.location.href = "login.html";
                 return;
@@ -81,18 +83,20 @@
             document.getElementById('txt-saludo').innerHTML = `🏋️‍♂️ Hola, <strong>${nombre}</strong>`;
             document.getElementById('btn-logout').style.display = "inline-block";
             
-            cargarMisReservas(nombre);
+            cargarMisReservas(id); // Cargamos por ID
         });
 
         document.getElementById('btn-logout').addEventListener('click', () => {
             localStorage.removeItem('nombreUsuario');
+            localStorage.removeItem('usuarioId'); // LIMPIEZA COMPLETA
             window.location.href = "index.html";
         });
 
         // --- 3. CARGAR RESERVAS ---
-        async function cargarMisReservas(nombre) {
+        async function cargarMisReservas(usuarioId) {
             try {
-                const respuesta = await fetch(`http://localhost:3000/mis-reservas/${nombre}`);
+                // Consultamos al endpoint que usa el ID
+                const respuesta = await fetch(`http://localhost:3000/mis-reservas/${usuarioId}`);
                 const reservas = await respuesta.json();
                 const contenedor = document.getElementById('lista-reservas');
                 
@@ -116,6 +120,7 @@
                 });
             } catch (error) {
                 console.error("Error:", error);
+                document.getElementById('lista-reservas').innerHTML = "<p>Error al conectar con el servidor.</p>";
             }
         }
 
